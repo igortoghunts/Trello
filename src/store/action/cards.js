@@ -22,3 +22,16 @@ export const addCard = (label, listId) => {
         });  
     };
 };
+
+
+export const cardOrder = () => {
+    return dispatch => {
+        axios.get('/cardsOrder')
+            .then(res => {
+                dispatch({type: 'CARD_ORDER_FETCHED', payload: res.data});
+            }).catch(e => {
+            console.log(e)
+        });
+    };
+};
+

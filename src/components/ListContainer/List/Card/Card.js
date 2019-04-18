@@ -1,11 +1,10 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
-import Container from '../../../../container';
 
 const Label = props =>  {
     return (     
-        <Draggable draggableId={props.id} index={props.index} >
+        <Draggable draggableId={props.id+'li'} index={props.index} >
         {provided =>(
             <li  {...provided.draggableProps}
                         {...provided.dragHandleProps}      
@@ -16,8 +15,10 @@ const Label = props =>  {
         )}
         </Draggable>  
     );
-}
+};
 
 export default Label;
+
+
 
 
