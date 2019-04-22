@@ -3,8 +3,8 @@ import { Draggable } from 'react-beautiful-dnd';
 
 
 const Label = props =>  {
-    return (     
-        <Draggable draggableId={props.id+'li'} index={props.index} >
+    return (
+        <Draggable draggableId={props.card.id + '' + props.index} index={props.index} >
         {provided =>(
             <li  {...provided.draggableProps}
                         {...provided.dragHandleProps}      

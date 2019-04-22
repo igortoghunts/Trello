@@ -19,10 +19,22 @@ class List extends Component {
     };
 
     render(){
-        const cards = this.props.fetchCards.filter(card => card.listId === this.props.listId);
+
+        let order = [];
+        this.props.cardOrder.map(item => {
+                if (item.listId === this.props.listId ) {
+                    item.cards.map(cardId => {
+                        return this.props.fetchCards.map(card => {
+                            if (cardId === card.id) {
+                                order = [...order, card];
+                            }
+                        });
+                    })
+                }
+        });
         return (
-            <Draggable draggableId={this.props.listId+'ul'} index={this.props.index}>
-                {provided => (
+            <Draggable draggableId={this.props.listId+'list'} index={this.props.index}>
+                { provided => (
                     <div className="list"
                          {...provided.draggableProps}
                          ref={provided.innerRef}
@@ -33,8 +45,8 @@ class List extends Component {
                                 <ul className="list-items"   ref={provided.innerRef}
                                     {...provided.droppableProps}
                                 >
-                                    {cards.map(( card, index ) => {
-                                        return <Card card={card} key={card.label} id={card.id} index={index}/>
+                                    {order.map(( card, index ) => {
+                                        return <Card card={card} key={card.label+index} id={card.id} index={index}/>
                                     })}
                                     {provided.placeholder}
                                 </ul>
@@ -56,7 +68,8 @@ class List extends Component {
 
 const mapStateToProps = state =>  {
     return {
-        fetchCards: state.cards.cards
+        fetchCards: state.cards.cards,
+        cardOrder: state.cards.cardsOrder
     }
 };
 

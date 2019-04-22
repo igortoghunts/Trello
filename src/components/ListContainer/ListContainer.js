@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { addList } from '../../store/action';
-import { lists } from '../../store/action';
-import { cards } from '../../store/action';
-import { listOrder } from '../../store/action';
+import { addList, lists, cards, listOrder, changeListOrder, cardOrder, changeCardOrder  } from '../../store/action';
+
 
 import List from './List/List';
 import  AddListsForm  from './List/AddList/AddList';
@@ -17,18 +15,18 @@ class Logo extends Component {
     
     handleSubmit = (values) => {
         this.setState({isShow: false});
-        this.props.addList( values.title );
+        this.props.addList( values );
     };
 
     componentDidMount(){
         this.props.lists();
         this.props.cards();
         this.props.listOrder();
-
+        this.props.cardOrder();
     };
 
     onDragEnd = results => {
-        const { destination, source } = results;
+        const { destination, source, type } = results;
         if(!destination){
             return;
         }
@@ -37,29 +35,29 @@ class Logo extends Component {
         ){
             return;
         }
+        if(type === 'list'){
+            console.log(source,destination);
+            this.props.changeListOrder(source.index, destination.index, this.props.listsOrder);
+        }else if(type === 'card'){
+            console.log(source,destination);
+
+            this.props.changeCardOrder(source, destination, this.props.cardsOrder);
+        }
     };
 
     render () {
-        console.log(this.props.listsOrder, this.props.allList);
-
-        return (     
+        return (
             <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="columns" direction="horizontal" type="column">
+                <Droppable droppableId="column" direction="horizontal" type="list">
                     {provided  => (
                         <div className="lists-container" {...provided.droppableProps} ref={provided.innerRef}>
-                            {/*{*/}
-                            {/*    this.props.allList.map( (list,index) => {*/}
-                            {/*        return <List list={list} key={list.title} listId={list.id} index={index}/>*/}
-                            {/*    })*/}
-                            {/*}*/}
                             {
                                 (this.props.listsOrder)? (
-                                    this.props.listsOrder.map(listByOrder => {
-                                        this.props.allList.map( (listByAllLists, index) => {
-                                         if(listByOrder === listByAllLists.id){
-                                             console.log(listByOrder, listByAllLists.id);
-                                             return <List list={listByAllLists} key={listByAllLists.title} listId={listByAllLists.id} index={index}/>
-                                         }
+                                    this.props.listsOrder.map( ( listByOrder ,index) => {
+                                        return this.props.allList.map( listByAllLists  => {
+                                            if(listByOrder === listByAllLists.id){
+                                                return <List list={listByAllLists} key={listByAllLists.title+index} listId={listByAllLists.id} index={index}/>
+                                            }
                                         })
                                     })
                                 ): null
@@ -70,7 +68,7 @@ class Logo extends Component {
                                     <AddListsForm onSubmit={this.handleSubmit}/>
                                 ) : (
                                     <button className="add-list-btn btn"
-                                            onClick={() => this.setState({isShow: true})}>Add a card</button>
+                                            onClick={() => this.setState({isShow: true})}>Add a List</button>
                                 )
                             }
                         </div>
@@ -84,7 +82,8 @@ class Logo extends Component {
 const mapStateToProps = state => {
     return {
         allList: state.lists.lists,
-        listsOrder: state.lists.listOrder
+        listsOrder: state.lists.listOrder,
+        cardsOrder: state.cards.cardsOrder
     } 
 };
 
@@ -92,7 +91,10 @@ const mapDispatchToProps = {
     lists,
     cards,
     addList,
-    listOrder
+    listOrder,
+    changeListOrder,
+    cardOrder,
+    changeCardOrder
 };
 export default connect (mapStateToProps, mapDispatchToProps)(Logo);
 
