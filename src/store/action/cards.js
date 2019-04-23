@@ -41,7 +41,6 @@ export const changeCardOrder = (source, destination,order) => {
     let card;
     newOrder.map(item => {
         if(item.listId === source.droppableId){
-            console.log(order);
             card = item.cards[source.index];
             item.cards.splice(source.index, 1);
         }
@@ -51,7 +50,6 @@ export const changeCardOrder = (source, destination,order) => {
             item.cards.splice(destination.index, 0, card);
         }
     });
-    console.log(newOrder, );
     return dispatch => {
         axios.put('/cardOrder/1',{ cards: newOrder })
             .then(res => {
@@ -61,4 +59,11 @@ export const changeCardOrder = (source, destination,order) => {
     };
 
 };
+
+export const editCard = (id) => {
+    return dispatch => {
+        dispatch({type: 'CARD_EDITOR_OPENED', payload: id});
+    }
+};
+
 

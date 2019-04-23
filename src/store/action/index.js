@@ -6,3 +6,4 @@ export { listOrder } from './lists';
 export { cardOrder } from './cards';
 export { changeListOrder } from './lists';
 export { changeCardOrder } from './cards';
+export { editCard } from './cards';

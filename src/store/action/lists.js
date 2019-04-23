@@ -19,14 +19,7 @@ export const addList = values => {
            dispatch({type: 'LIST_ADDED', payload: res.data});
         }).catch(e => {
             console.log(e);
-        });
-        console.log(values); //continue...
-        // axios.post('/listOrder/1',{ title })
-        //     .then(res => {
-        //         dispatch({type: 'LIST_ORDER_ADDED', payload: res.data});
-        //     }).catch(e => {
-        //     console.log(e);
-        // });
+        })
     }
 };
 

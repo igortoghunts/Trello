@@ -15,7 +15,7 @@ class List extends Component {
     };
 
     state = {
-        isShow: false
+        isShow: false,
     };
 
     render(){
@@ -32,6 +32,7 @@ class List extends Component {
                     })
                 }
         });
+
         return (
             <Draggable draggableId={this.props.listId+'list'} index={this.props.index}>
                 { provided => (
@@ -46,7 +47,12 @@ class List extends Component {
                                     {...provided.droppableProps}
                                 >
                                     {order.map(( card, index ) => {
-                                        return <Card card={card} key={card.label+index} id={card.id} index={index}/>
+                                        return <Card
+                                                    card={card}
+                                                    key={card.label+index}
+                                                    id={card.id}
+                                                    index={index}
+                                                />
                                     })}
                                     {provided.placeholder}
                                 </ul>
